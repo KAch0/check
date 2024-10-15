@@ -38,7 +38,15 @@ function sendWebhook()
         end
     end
 
-    local PlayersMin = #game.Players:GetPlayers() -- จำนวนผู้เล่นในเซิร์ฟเวอร์
+    local Players = game.Players:GetPlayers() -- ดึงข้อมูลผู้เล่นในเซิร์ฟเวอร์
+    local PlayersMin = #Players -- จำนวนผู้เล่นในเซิร์ฟเวอร์
+
+    -- สร้างรายการชื่อผู้เล่น
+    local PlayerNames = {}
+    for _, player in ipairs(Players) do
+        table.insert(PlayerNames, player.Name)
+    end
+    local PlayerList = table.concat(PlayerNames, ", ") -- รวมชื่อผู้เล่นเข้าด้วยกัน
 
     MoonMessage = '```'..tostring(MoonPercent..'%'..' : '..MoonIcon)..'```'
     CodeServer = 'game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,'..'\''..tostring(game.JobId)..'\''..')'
@@ -58,6 +66,11 @@ function sendWebhook()
                     {
                         ["name"] = "Players",
                         ["value"] = '```'..tostring(PlayersMin)..'/12```',
+                        ["inline"] = false
+                    },
+                    {
+                        ["name"] = "Player List",
+                        ["value"] = '```'..PlayerList..'```',
                         ["inline"] = false
                     },
                     {
