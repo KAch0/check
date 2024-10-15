@@ -51,8 +51,9 @@ function sendWebhook()
     MoonMessage = '```'..tostring(MoonPercent..'%'..' : '..MoonIcon)..'```'
     CodeServer = 'game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,'..'\''..tostring(game.JobId)..'\''..')'
 
-    -- ดึงเวลาปัจจุบันในรูปแบบที่ต้องการ
-    local CurrentTime = os.date("%Y-%m-%d %H:%M:%S")
+    -- ดึงเวลาปัจจุบันจากเซิร์ฟเวอร์ Roblox
+    local ServerTime = os.time() + game:GetService("Players").LocalPlayer:GetServerTime() -- ดึงเวลาจากเซิร์ฟเวอร์
+    local CurrentTime = os.date("%Y-%m-%d %H:%M:%S", ServerTime)
 
     local Embed = {
         ["username"] = "Full Moon Notify",
