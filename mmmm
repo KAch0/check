@@ -1,17 +1,18 @@
 LinkHook = "https://discord.com/api/webhooks/1294693373038559303/B06YiAu5bRBY0kbSSmtZvk5XJd4A-itA1f2yj38DUi0C5rIG5-Sb_lV8WNBquMxc1bPk" -- webhook to send the moon status
 
 local Moon = {
-['8'] = "http://www.roblox.com/asset/?id=9709149431", -- 🌕
-['7'] = "http://www.roblox.com/asset/?id=9709149052", -- 🌖
-['6'] = "http://www.roblox.com/asset/?id=9709143733", -- 🌗
-['5'] = "http://www.roblox.com/asset/?id=9709150401", -- 🌘
-['4'] = "http://www.roblox.com/asset/?id=9709135895", -- 🌑
-['3'] = "http://www.roblox.com/asset/?id=9709139597", -- 🌒
-['2'] = "http://www.roblox.com/asset/?id=9709150086", -- 🌓
-['1'] = "http://www.roblox.com/asset/?id=9709149680", -- 🌔
+    ['8'] = "http://www.roblox.com/asset/?id=9709149431", -- 🌕
+    ['7'] = "http://www.roblox.com/asset/?id=9709149052", -- 🌖
+    ['6'] = "http://www.roblox.com/asset/?id=9709143733", -- 🌗
+    ['5'] = "http://www.roblox.com/asset/?id=9709150401", -- 🌘
+    ['4'] = "http://www.roblox.com/asset/?id=9709135895", -- 🌑
+    ['3'] = "http://www.roblox.com/asset/?id=9709139597", -- 🌒
+    ['2'] = "http://www.roblox.com/asset/?id=9709150086", -- 🌓
+    ['1'] = "http://www.roblox.com/asset/?id=9709149680", -- 🌔
 };
 
 function sendWebhook()
+    local MoonIcon
     if game:GetService("Lighting").Sky.MoonTextureId == Moon['1'] then
         MoonIcon = '🌔'
     elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['2'] then
@@ -30,19 +31,21 @@ function sendWebhook()
         MoonIcon = '🌕'
     end
 
+    local MoonPercent
     for i,v in pairs(Moon) do
         if game:GetService("Lighting").Sky.MoonTextureId == v then
             MoonPercent = i / 8 * 100
         end
     end
 
-    for i,v in pairs(game.Players:GetPlayers()) do
-        PlayersMin = i
-    end
+    local PlayersMin = #game.Players:GetPlayers() -- จำนวนผู้เล่นในเซิร์ฟเวอร์
 
     MoonMessage = '```'..tostring(MoonPercent..'%'..' : '..MoonIcon)..'```'
     CodeServer = 'game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,'..'\''..tostring(game.JobId)..'\''..')'
-    
+
+    -- ดึงเวลาปัจจุบันในรูปแบบที่ต้องการ
+    local CurrentTime = os.date("%Y-%m-%d %H:%M:%S")
+
     local Embed = {
         ["username"] = "Full Moon Notify",
         ["avatar_url"] = "https://cdn.discordapp.com/attachments/1258228428881137677/1258228644959096907/1705502093042.jpg?ex=6687483d&is=6685f6bd&hm=31d72cdb691c08bba64e22e59af42a1c4bad11b6ef8bad223436bf883d4e334a&",
@@ -51,7 +54,7 @@ function sendWebhook()
                 ["title"] = "**Full Moon Notify**",
                 ["color"] = tonumber(00000000),
                 ["type"] = "rich",
-                ["fields"] =  {
+                ["fields"] = {
                     {
                         ["name"] = "Players",
                         ["value"] = '```'..tostring(PlayersMin)..'/12```',
@@ -71,6 +74,11 @@ function sendWebhook()
                         ["name"] = "Moon",
                         ["value"] = ''..MoonMessage..'',
                         ["inline"] = true
+                    },
+                    {
+                        ["name"] = "Current Time",
+                        ["value"] = '```'..CurrentTime..'```',
+                        ["inline"] = false
                     }
                 },
                 ["thumbnail"] = {
