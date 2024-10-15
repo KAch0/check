@@ -1,9 +1,6 @@
 LinkHook = "https://discord.com/api/webhooks/1294693373038559303/B06YiAu5bRBY0kbSSmtZvk5XJd4A-itA1f2yj38DUi0C5rIG5-Sb_lV8WNBquMxc1bPk" -- webhook to send the moon status
 
 local Moon = {
-LinkHook = "https://discord.com/api/webhooks/1294693373038559303/B06YiAu5bRBY0kbSSmtZvk5XJd4A-itA1f2yj38DUi0C5rIG5-Sb_lV8WNBquMxc1bPk" -- webhook to send the moon status
-
-local Moon = {
     ['8'] = "http://www.roblox.com/asset/?id=9709149431", -- 🌕
     ['7'] = "http://www.roblox.com/asset/?id=9709149052", -- 🌖
     ['6'] = "http://www.roblox.com/asset/?id=9709143733", -- 🌗
@@ -13,31 +10,6 @@ local Moon = {
     ['2'] = "http://www.roblox.com/asset/?id=9709150086", -- 🌓
     ['1'] = "http://www.roblox.com/asset/?id=9709149680", -- 🌔
 };
-
--- รายชื่อผู้เล่นที่ต้องการให้โดดเด่น
-local TargetNames = {
-    "eBdWUeUtYUv",
-    "kVGLONRWUcQ",
-    "zFQRqLecPFz",
-    "tubAgdeiJrA",
-    "YXzmgOZKtZP",
-    "XaqRGQdFAiT",
-    "rweoYIFmBzg",
-    "mGpiTIJpgla",
-    "yifiasohoc",
-    "mncbbapmpr",
-    "osszuanacc",
-    "aurznuufaz",
-    "buaubsiabb",
-    "bninbnuima",
-    "aarsayibar",
-    "oahczaaaon",
-    "fyyiauuran",
-    "bonsfaanic",
-    "pahyspnarr",
-    "d37gtTd4",       -- เพิ่มชื่อใหม่ที่นี่
-    "Shixroch5542"    -- เพิ่มชื่อใหม่ที่นี่
-}
 
 function sendWebhook()
     local MoonIcon
@@ -58,18 +30,8 @@ function sendWebhook()
     -- สร้างรายการชื่อผู้เล่น
     local PlayerNames = {}
     for _, player in ipairs(Players) do
-        local playerName = player.Name
-
-        -- ตรวจสอบชื่อผู้เล่นใน TargetNames
-        if table.find(TargetNames, playerName) then
-            playerName = "**" .. playerName .. "**" -- ทำให้ชื่อผู้เล่นที่ตรงตามเงื่อนไขเป็นตัวหนา
-        else
-            playerName = "~~" .. playerName .. "~~" -- ทำให้ชื่อผู้เล่นที่ไม่อยู่ใน TargetNames ขีดฆ่า
-        end
-        
-        table.insert(PlayerNames, playerName)
+        table.insert(PlayerNames, player.Name)
     end
-
     local PlayerList = table.concat(PlayerNames, ", ") -- รวมชื่อผู้เล่นเข้าด้วยกัน
 
     MoonMessage = '```'..tostring(MoonPercent..'%'..' : '..MoonIcon)..'```'
@@ -78,8 +40,7 @@ function sendWebhook()
     -- ดึงเวลาปัจจุบันในรูปแบบที่ต้องการจากเซิร์ฟเวอร์
     local ServerTime = game.Lighting.ClockTime
     local Minutes = math.floor(ServerTime * 60) % 60 -- คำนวณนาที
-    local Seconds = math.floor((ServerTime * 3600) % 60) -- คำนวณวินาที
-    local CurrentTime = string.format("%02d:%02d:%02d", math.floor(ServerTime), Minutes, Seconds) -- แสดงเวลาในรูปแบบ HH:MM:SS
+    local CurrentTime = string.format("%02d:%02d", math.floor(ServerTime), Minutes) -- แสดงเวลาในรูปแบบ HH:MM
 
     local Embed = {
         ["username"] = "Full Moon Notify",
