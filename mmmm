@@ -13,28 +13,14 @@ local Moon = {
 
 function sendWebhook()
     local MoonIcon
-    if game:GetService("Lighting").Sky.MoonTextureId == Moon['1'] then
-        MoonIcon = '🌔'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['2'] then
-        MoonIcon = '🌓'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['3'] then
-        MoonIcon = '🌒'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['4'] then
-        MoonIcon = '🌑'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['5'] then
-        MoonIcon = '🌘'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['6'] then
-        MoonIcon = '🌗'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['7'] then
-        MoonIcon = '🌖'
-    elseif game:GetService("Lighting").Sky.MoonTextureId == Moon['8'] then
-        MoonIcon = '🌕'
-    end
+    local moonTextureId = game:GetService("Lighting").Sky.MoonTextureId
 
-    local MoonPercent
-    for i,v in pairs(Moon) do
-        if game:GetService("Lighting").Sky.MoonTextureId == v then
+    for i, v in pairs(Moon) do
+        if moonTextureId == v then
+            MoonIcon = i
             MoonPercent = i / 8 * 100
+            MoonIcon = '🌕' -- แทนค่าที่จะส่งเป็น moon icon
+            break
         end
     end
 
@@ -51,9 +37,9 @@ function sendWebhook()
     MoonMessage = '```'..tostring(MoonPercent..'%'..' : '..MoonIcon)..'```'
     CodeServer = 'game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId,'..'\''..tostring(game.JobId)..'\''..')'
 
-    -- ดึงเวลาปัจจุบันจากเซิร์ฟเวอร์ Roblox
-    local ServerTime = os.time() + game:GetService("Players").LocalPlayer:GetServerTime() -- ดึงเวลาจากเซิร์ฟเวอร์
-    local CurrentTime = os.date("%Y-%m-%d %H:%M:%S", ServerTime)
+    -- ดึงเวลาปัจจุบันในรูปแบบที่ต้องการจากเซิร์ฟเวอร์
+    local ServerTime = game.Lighting.ClockTime
+    local CurrentTime = string.format("%02d:00", ServerTime) -- แสดงเป็นชั่วโมงในเกม
 
     local Embed = {
         ["username"] = "Full Moon Notify",
@@ -61,7 +47,7 @@ function sendWebhook()
         ["embeds"] = {
             {
                 ["title"] = "**Full Moon Notify**",
-                ["color"] = tonumber(00000000),
+                ["color"] = tonumber(0),
                 ["type"] = "rich",
                 ["fields"] = {
                     {
@@ -90,8 +76,8 @@ function sendWebhook()
                         ["inline"] = true
                     },
                     {
-                        ["name"] = "Current Time",
-                        ["value"] = '```'..CurrentTime..'```',
+                        ["name"] = "Current Game Time",
+                        ["value"] = '```'..CurrentTime..'```', -- ใช้เวลาในเกม
                         ["inline"] = false
                     }
                 },
