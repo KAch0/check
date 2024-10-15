@@ -39,7 +39,9 @@ function sendWebhook()
 
     -- ดึงเวลาปัจจุบันในรูปแบบที่ต้องการจากเซิร์ฟเวอร์
     local ServerTime = game.Lighting.ClockTime
-    local CurrentTime = string.format("%02d:00", ServerTime) -- แสดงเป็นชั่วโมงในเกม
+    local Minutes = math.floor(ServerTime * 60) % 60 -- คำนวณนาที
+    local Seconds = math.floor((ServerTime * 3600) % 60) -- คำนวณวินาที
+    local CurrentTime = string.format("%02d:%02d:%02d", math.floor(ServerTime), Minutes, Seconds) -- แสดงเวลาในรูปแบบ HH:MM:SS
 
     local Embed = {
         ["username"] = "Full Moon Notify",
